@@ -1,0 +1,26 @@
+﻿{
+    "name":  "YokiFrame.TableKit.Editor.TableKitWindow",
+    "rootNamespace":  "YokiFrame.TableKit.Editor",
+    "references":  [
+                       "Luban.Runtime"
+                   ],
+    "includePlatforms":  [
+                             "Editor"
+                         ],
+    "excludePlatforms":  [
+
+                         ],
+    "allowUnsafeCode":  false,
+    "overrideReferences":  false,
+    "precompiledReferences":  [
+
+                              ],
+    "autoReferenced":  true,
+    "defineConstraints":  [
+
+                          ],
+    "versionDefines":  [
+
+                       ],
+    "noEngineReferences":  false
+}
