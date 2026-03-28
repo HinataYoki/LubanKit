@@ -1,6 +1,6 @@
 {
     "name": "com.hinatayoki.lubankit",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "displayName": "LubanKit",
     "description": "A visual Unity editor tool for Luban configuration table management. One-click generation of data files and runtime code, with support for custom loaders, async loading (UniTask), multi-target export, data preview, and hot reload.",
     "unity": "2021.3",
