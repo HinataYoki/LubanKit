@@ -2,9 +2,10 @@
     "name": "com.hinatayoki.lubankit",
     "version": "1.0.1",
     "displayName": "LubanKit",
-    "description": "A visual Unity editor tool for Luban configuration table management. One-click generation of data files and runtime code, with support for custom loaders, async loading (UniTask), multi-target export, data preview, and hot reload.",
+    "description": "Unity Luban GUI and visual table workflow tool. Configure Luban in the Unity Editor, generate config data and runtime code, preview data, support custom loaders, async loading, multi-target export, and hot reload.",
     "unity": "2021.3",
     "unityRelease": "0f1",
+    "documentationUrl": "https://github.com/HinataYoki/LubanKit/blob/main/Assets/LubanKit/README.md",
     "changelogUrl": "https://github.com/HinataYoki/LubanKit/blob/main/CHANGELOG.md",
     "licensesUrl": "https://github.com/HinataYoki/LubanKit/blob/main/LICENSE",
     "author": {
@@ -17,12 +18,21 @@
     },
     "keywords": [
         "luban",
+        "luban-gui",
+        "unity-luban",
+        "unity",
+        "gui",
+        "table-editor",
         "config",
         "table",
+        "config-table",
+        "code-generator",
         "code-generation",
         "editor-tool",
         "excel",
-        "configuration"
+        "configuration",
+        "unity-editor",
+        "data-driven"
     ],
     "dependencies": {},
     "samples": []

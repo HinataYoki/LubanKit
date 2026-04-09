@@ -1,8 +1,12 @@
 # LubanKit
 
-**Unity Luban 配置表可视化工具** — 一站式管理 Luban 配置、生成代码、预览数据。
+[English README](README_EN.md)
 
-> 纯编辑器工具，生成的运行时代码**零依赖**，适用于任何 Unity 项目。
+**Unity Luban GUI / 配置表可视化编辑器 / 代码生成工作流工具**。
+
+LubanKit 是一个面向 **Unity + Luban** 的图形化编辑器插件，用来替代手写命令行参数的配置流程。它适合希望在 Unity 中完成 **Luban 配置、配置表生成、运行时代码生成、数据预览、热重载** 的项目团队。
+
+> 纯编辑器工具，生成的运行时代码**零额外运行时依赖**；适用于任何 Unity 项目，也适合作为 **Luban GUI**、**Unity 配置表工具**、**Luban table editor**、**Luban code generation workflow** 的落地方案。
 
 ---
 
@@ -19,6 +23,14 @@
 - **程序集隔离** — 可选生成 `.asmdef`，配置表代码独立编译
 - **热重载** — 运行时重新加载配置表，支持热更新场景
 - **配置持久化** — 所有设置自动保存到 `EditorPrefs`，重启编辑器不丢失
+
+### 适用场景
+
+- 想找一个 **Luban 的 GUI 界面**，而不是长期维护命令行脚本
+- 想在 **Unity 编辑器里管理 Luban 配置表生成流程**
+- 想把 **数据生成、代码生成、加载入口生成** 放到同一个工具窗口中
+- 想给项目接入 **Luban + Unity** 的配置表工作流，但希望降低接入门槛
+- 想要支持 **Resources / YooAsset / Addressables / 自定义加载器** 的配置表访问方案
 
 ---
 
@@ -66,19 +78,28 @@ LubanKit 通过 `YOKIFRAME_LUBAN_SUPPORT` 宏控制编译。安装 `Luban.Runtim
 
 ### 1. 准备 Luban 环境
 
-确保你已有 Luban 工作目录，典型结构如下：
+确保项目中已经放好 Luban 工具目录。LubanKit 默认约定的目录结构如下：
 
 ```
-LubanProject/
-├── luban.conf              # Luban 配置文件
-├── Luban/
-│   └── Luban.dll           # Luban 工具
-├── Datas/                  # Excel/JSON 配置数据
-│   ├── tb_item.xlsx
-│   └── tb_config.xlsx
-└── Defines/                # 表结构定义
-    └── __tables__.xlsx
+Luban/
+├── MiniTemplate/                 # 默认示例工作目录
+│   ├── luban.conf                # Luban 配置文件
+│   ├── Datas/                    # Excel / JSON 配置数据
+│   │   ├── tb_item.xlsx
+│   │   └── tb_config.xlsx
+│   └── Defines/                  # 表结构定义
+│       └── __tables__.xlsx
+├── Tools/
+│   └── Luban/
+│       └── Luban.dll             # Luban 工具 DLL
+└── ...                           # 其他工作目录或工具文件（可选）
 ```
+
+其中：
+
+- `Luban/MiniTemplate` 是一个具体的 Luban 工作目录
+- `Luban/Tools/Luban/Luban.dll` 是 Luban 工具 DLL 的默认位置
+- 如果你有多个工作目录，也可以把工作目录切换为其他包含 `luban.conf` 的目录
 
 ### 2. 打开工具窗口
 
@@ -86,16 +107,18 @@ LubanProject/
 
 ### 3. 配置路径
 
-在「配置」区域填写：
+首次使用时，推荐先按下面这组默认路径填写：
 
 | 配置项 | 说明 | 示例 |
 |--------|------|------|
-| Luban 工作目录 | 包含 `luban.conf` 的目录 | `../LubanProject` |
-| Luban.dll 路径 | `Luban.dll` 文件路径 | `../LubanProject/Luban/Luban.dll` |
-| 数据输出目录 | Luban 生成的 `.bytes`/`.json` 存放位置 | `Assets/Art/Table` |
-| 代码输出目录 | 生成的 C# 代码存放位置 | `Assets/Scripts/Table` |
+| Luban 工作目录 | 包含 `luban.conf` 的目录 | `Luban/MiniTemplate` |
+| Luban.dll 路径 | `Luban.dll` 文件路径 | `Luban/Tools/Luban/Luban.dll` |
+| 数据输出目录 | Luban 生成的 `.bytes`/`.json` 存放位置 | `Assets/Resources/Art/Table/` |
+| 代码输出目录 | 生成的 C# 代码存放位置 | `Assets/Scripts/TableKit/` |
 
 > 路径支持相对路径（相对于 Unity 项目根目录）和绝对路径。
+
+> 注意：`Luban 工作目录` 应该指向某个具体工作目录，例如 `Luban/MiniTemplate`，而不是只填 `Luban/` 根目录；`Luban.dll` 则通常位于 `Luban/Tools/Luban/Luban.dll`。
 
 ### 4. 选择构建参数
 
@@ -127,8 +150,8 @@ Debug.Log(item.Name);
 
 | 配置 | 说明 |
 |------|------|
-| **Luban 工作目录** | Luban 项目根目录，包含 `luban.conf`、`Datas/`、`Defines/` |
-| **Luban.dll 路径** | Luban 代码生成工具的 DLL 文件路径 |
+| **Luban 工作目录** | 具体某个 Luban 工作目录，包含 `luban.conf`、`Datas/`、`Defines/` |
+| **Luban.dll 路径** | 通常位于 Luban 根目录下的 `Tools/Luban/Luban.dll` |
 
 ### 输出路径
 
@@ -386,7 +409,22 @@ Editor/
 
 ### Q: 生成时报错 "Luban 工作目录未配置或不存在"
 
-确保 Luban 工作目录路径正确，且目录下存在 `luban.conf` 文件。支持相对路径（如 `../LubanProject`）。
+确保 Luban 工作目录路径正确，且目录下存在 `luban.conf` 文件。该路径通常是包含 `Datas/`、`Defines/`、`luban.conf` 的目录，而不一定等于 Luban 工具目录。
+
+---
+
+## 搜索关键词
+
+如果你是通过下面这些关键词找到这个项目，它们指向的就是 LubanKit 的典型用途：
+
+- `Luban GUI`
+- `Unity Luban GUI`
+- `Luban Unity editor`
+- `Luban table editor`
+- `Unity 配置表工具`
+- `Luban 配置表可视化`
+- `Luban code generation Unity`
+- `Unity Excel config table generator`
 
 ### Q: 生成的代码编译报错 "找不到 ByteBuf / SimpleJSON"
 

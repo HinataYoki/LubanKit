@@ -132,6 +132,17 @@ namespace YokiFrame.TableKit.Editor
         private const string PREF_GUIDE_EXPANDED = "TableKit_GuideExpanded";
         private const string PREF_CONSOLE_LOG = "TableKit_ConsoleLog";
 
+        private const string DEFAULT_EDITOR_DATA_PATH = "Assets/Resources/Art/Table/";
+        private const string DEFAULT_RUNTIME_PATH_PATTERN = "Art/Table/{0}";
+        private const string DEFAULT_LUBAN_WORK_DIR = "Luban/MiniTemplate";
+        private const string DEFAULT_LUBAN_DLL_PATH = "Luban/Tools/Luban/Luban.dll";
+        private const string DEFAULT_TARGET = "client";
+        private const string DEFAULT_CODE_TARGET = "cs-bin";
+        private const string DEFAULT_DATA_TARGET = "bin";
+        private const string DEFAULT_OUTPUT_DATA_DIR = "Assets/Resources/Art/Table/";
+        private const string DEFAULT_OUTPUT_CODE_DIR = "Assets/Scripts/TableKit/";
+        private const string DEFAULT_ASSEMBLY_NAME = "YokiFrame.TableKit";
+
         #endregion
 
         #region 下拉选项
@@ -186,19 +197,38 @@ namespace YokiFrame.TableKit.Editor
 
         #region 配置持久化
 
+        private void ApplyDefaultValues()
+        {
+            mOutputDataDir = DEFAULT_OUTPUT_DATA_DIR;
+            mEditorDataPath = DEFAULT_EDITOR_DATA_PATH;
+            mRuntimePathPattern = DEFAULT_RUNTIME_PATH_PATTERN;
+            mLubanWorkDir = DEFAULT_LUBAN_WORK_DIR;
+            mLubanDllPath = DEFAULT_LUBAN_DLL_PATH;
+            mTarget = DEFAULT_TARGET;
+            mCodeTarget = DEFAULT_CODE_TARGET;
+            mDataTarget = DEFAULT_DATA_TARGET;
+            mOutputCodeDir = DEFAULT_OUTPUT_CODE_DIR;
+            mUseAssemblyDefinition = true;
+            mAssemblyName = DEFAULT_ASSEMBLY_NAME;
+            mGenerateExternalTypeUtil = false;
+            mUseAsyncLoading = false;
+            mCustomEditorDataPath = false;
+            mEditorDataPath = mOutputDataDir;
+        }
+
         private void LoadPrefs()
         {
-            mEditorDataPath = EditorPrefs.GetString(PREF_EDITOR_DATA_PATH, "Assets/Resources/Art/Table/");
-            mRuntimePathPattern = EditorPrefs.GetString(PREF_RUNTIME_PATH_PATTERN, "Art/Table/{0}");
-            mLubanWorkDir = EditorPrefs.GetString(PREF_LUBAN_WORK_DIR, "Luban/MiniTemplate");
-            mLubanDllPath = EditorPrefs.GetString(PREF_LUBAN_DLL_PATH, "Luban/Tools/Luban/Luban.dll");
-            mTarget = EditorPrefs.GetString(PREF_TARGET, "client");
-            mCodeTarget = EditorPrefs.GetString(PREF_CODE_TARGET, "cs-bin");
-            mDataTarget = EditorPrefs.GetString(PREF_DATA_TARGET, "bin");
-            mOutputDataDir = EditorPrefs.GetString(PREF_OUTPUT_DATA_DIR, "Assets/Resources/Art/Table/");
-            mOutputCodeDir = EditorPrefs.GetString(PREF_OUTPUT_CODE_DIR, "Assets/Scripts/TableKit/");
-            mUseAssemblyDefinition = EditorPrefs.GetBool(PREF_USE_ASSEMBLY, false);
-            mAssemblyName = EditorPrefs.GetString(PREF_ASSEMBLY_NAME, "YokiFrame.TableKit");
+            mEditorDataPath = EditorPrefs.GetString(PREF_EDITOR_DATA_PATH, DEFAULT_EDITOR_DATA_PATH);
+            mRuntimePathPattern = EditorPrefs.GetString(PREF_RUNTIME_PATH_PATTERN, DEFAULT_RUNTIME_PATH_PATTERN);
+            mLubanWorkDir = EditorPrefs.GetString(PREF_LUBAN_WORK_DIR, DEFAULT_LUBAN_WORK_DIR);
+            mLubanDllPath = EditorPrefs.GetString(PREF_LUBAN_DLL_PATH, DEFAULT_LUBAN_DLL_PATH);
+            mTarget = EditorPrefs.GetString(PREF_TARGET, DEFAULT_TARGET);
+            mCodeTarget = EditorPrefs.GetString(PREF_CODE_TARGET, DEFAULT_CODE_TARGET);
+            mDataTarget = EditorPrefs.GetString(PREF_DATA_TARGET, DEFAULT_DATA_TARGET);
+            mOutputDataDir = EditorPrefs.GetString(PREF_OUTPUT_DATA_DIR, DEFAULT_OUTPUT_DATA_DIR);
+            mOutputCodeDir = EditorPrefs.GetString(PREF_OUTPUT_CODE_DIR, DEFAULT_OUTPUT_CODE_DIR);
+            mUseAssemblyDefinition = EditorPrefs.GetBool(PREF_USE_ASSEMBLY, true);
+            mAssemblyName = EditorPrefs.GetString(PREF_ASSEMBLY_NAME, DEFAULT_ASSEMBLY_NAME);
             mGenerateExternalTypeUtil = EditorPrefs.GetBool(PREF_GENERATE_EXTERNAL_TYPE_UTIL, false);
             mUseAsyncLoading = EditorPrefs.GetBool(PREF_USE_ASYNC_LOADING, false);
             mCustomEditorDataPath = EditorPrefs.GetBool(PREF_CUSTOM_EDITOR_DATA_PATH, false);
@@ -261,22 +291,7 @@ namespace YokiFrame.TableKit.Editor
             if (!EditorUtility.DisplayDialog("还原默认设置", "确定要将所有配置还原为默认值吗？", "确定", "取消"))
                 return;
 
-            // 设置默认值
-            mEditorDataPath = "Assets/Resources/Art/Table/";
-            mRuntimePathPattern = "Art/Table/{0}";
-            mLubanWorkDir = "Luban/MiniTemplate";
-            mLubanDllPath = "Luban/Tools/Luban/Luban.dll";
-            mTarget = "client";
-            mCodeTarget = "cs-bin";
-            mDataTarget = "bin";
-            mOutputDataDir = "Assets/Resources/Art/Table/";
-            mOutputCodeDir = "Assets/Scripts/TableKit/";
-            mUseAssemblyDefinition = false;
-            mAssemblyName = "YokiFrame.TableKit";
-            mGenerateExternalTypeUtil = false;
-            mUseAsyncLoading = false;
-            mCustomEditorDataPath = false;
-            mEditorDataPath = mOutputDataDir;
+            ApplyDefaultValues();
             
             // 清空多目标输出列表
             mExtraOutputTargets.Clear();
