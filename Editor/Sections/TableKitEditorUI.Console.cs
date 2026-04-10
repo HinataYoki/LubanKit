@@ -36,13 +36,13 @@ namespace YokiFrame.TableKit.Editor
             header.style.borderBottomColor = new StyleColor(Design.BorderDefault);
             container.Add(header);
 
-            var title = new Label("控制台");
+            var title = new Label(T("console.title"));
             title.style.fontSize = Design.FontSizeSection;
             title.style.unityFontStyleAndWeight = FontStyle.Bold;
             title.style.color = new StyleColor(Design.TextPrimary);
             header.Add(title);
 
-            var clearBtn = new Button(ClearLog) { text = "清除" };
+            var clearBtn = new Button(ClearLog) { text = T("console.clear") };
             ApplySmallButtonStyle(clearBtn);
             header.Add(clearBtn);
 
@@ -64,7 +64,7 @@ namespace YokiFrame.TableKit.Editor
             statusIcon.tintColor = Design.BrandSuccess;
             mStatusBanner.Add(statusIcon);
 
-            mStatusBannerLabel = new Label("就绪");
+            mStatusBannerLabel = new Label(T("console.ready"));
             mStatusBannerLabel.style.color = new StyleColor(Design.TextPrimary);
             mStatusBannerLabel.style.fontSize = Design.FontSizeBody;
             mStatusBanner.Add(mStatusBannerLabel);
@@ -109,22 +109,22 @@ namespace YokiFrame.TableKit.Editor
             switch (status)
             {
                 case BuildStatus.Ready:
-                    mStatusBannerLabel.text = "就绪";
+                    mStatusBannerLabel.text = T("console.ready");
                     mStatusBanner.style.backgroundColor = new StyleColor(Design.LayerElevated);
                     if (icon != null) icon.tintColor = Design.BrandSuccess;
                     break;
                 case BuildStatus.Building:
-                    mStatusBannerLabel.text = "生成中...";
+                    mStatusBannerLabel.text = T("console.building");
                     mStatusBanner.style.backgroundColor = new StyleColor(new Color(0.2f, 0.25f, 0.3f));
                     if (icon != null) icon.tintColor = Design.BrandPrimary;
                     break;
                 case BuildStatus.Success:
-                    mStatusBannerLabel.text = "生成成功";
+                    mStatusBannerLabel.text = T("console.success");
                     mStatusBanner.style.backgroundColor = new StyleColor(new Color(0.15f, 0.25f, 0.15f));
                     if (icon != null) icon.tintColor = Design.BrandSuccess;
                     break;
                 case BuildStatus.Failed:
-                    mStatusBannerLabel.text = "生成失败";
+                    mStatusBannerLabel.text = T("console.failed");
                     mStatusBanner.style.backgroundColor = new StyleColor(new Color(0.3f, 0.15f, 0.15f));
                     if (icon != null) icon.tintColor = Design.BrandDanger;
                     break;
@@ -133,7 +133,7 @@ namespace YokiFrame.TableKit.Editor
 
         private void ClearLog()
         {
-            mLogContent.value = "日志已清除";
+            mLogContent.value = T("console.cleared");
             UpdateStatusBanner(BuildStatus.Ready);
             SaveConsoleLog(); // 持久化清除状态
         }

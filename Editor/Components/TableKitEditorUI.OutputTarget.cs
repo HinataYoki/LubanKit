@@ -24,16 +24,16 @@ namespace YokiFrame.TableKit.Editor
         /// </summary>
         private VisualElement BuildExtraOutputSection(VisualElement container)
         {
-            var section = CreateSubSection("额外输出目标");
+            var section = CreateSubSection(T("extra.title"));
             container.Add(section);
 
-            var hint = new Label("可添加多个输出目标，每个目标可独立选择导出字段分组");
+            var hint = new Label(T("extra.hint"));
             hint.style.fontSize = Design.FontSizeSmall;
             hint.style.color = new StyleColor(Design.TextTertiary);
             hint.style.marginTop = 4;
             section.Add(hint);
 
-            var groupHint = new Label("提示: 不同导出目标会分批运行 Luban，确保字段正确导出");
+            var groupHint = new Label(T("extra.warn"));
             groupHint.style.fontSize = Design.FontSizeSmall;
             groupHint.style.color = new StyleColor(Design.BrandWarning);
             groupHint.style.marginTop = 2;
@@ -43,7 +43,7 @@ namespace YokiFrame.TableKit.Editor
             mExtraOutputContainer.style.marginTop = 8;
             section.Add(mExtraOutputContainer);
 
-            var addBtn = new Button(AddExtraOutputTarget) { text = "+ 添加输出目标" };
+            var addBtn = new Button(AddExtraOutputTarget) { text = T("extra.add") };
             addBtn.style.marginTop = 8;
             addBtn.style.alignSelf = Align.FlexStart;
             ApplySmallButtonStyle(addBtn);
@@ -122,7 +122,7 @@ namespace YokiFrame.TableKit.Editor
             targetDropdown.style.width = 70;
             targetDropdown.style.marginLeft = 8;
             targetDropdown.value = target.target;
-            targetDropdown.tooltip = "决定导出哪些字段分组（client=客户端字段, server=服务端字段, all=全部）";
+            targetDropdown.tooltip = T("extra.target.tooltip");
             targetDropdown.RegisterValueChangedCallback(evt =>
             {
                 target.target = evt.newValue;
@@ -158,7 +158,7 @@ namespace YokiFrame.TableKit.Editor
             headerRow.Add(deleteBtn);
 
             // 单独生成按钮
-            var generateBtn = new Button(() => GenerateSingleTarget(index)) { text = "生成" };
+            var generateBtn = new Button(() => GenerateSingleTarget(index)) { text = T("extra.generate") };
             generateBtn.style.marginLeft = 4;
             generateBtn.style.height = 22;
             generateBtn.style.paddingLeft = 8;
@@ -167,7 +167,7 @@ namespace YokiFrame.TableKit.Editor
             generateBtn.style.color = new StyleColor(Color.white);
             generateBtn.style.borderTopLeftRadius = generateBtn.style.borderTopRightRadius = 3;
             generateBtn.style.borderBottomLeftRadius = generateBtn.style.borderBottomRightRadius = 3;
-            generateBtn.tooltip = "仅生成此目标的数据和代码";
+            generateBtn.tooltip = T("extra.generate.tooltip");
             headerRow.Add(generateBtn);
         }
 
@@ -179,7 +179,7 @@ namespace YokiFrame.TableKit.Editor
             dataRow.style.marginTop = 8;
             item.Add(dataRow);
 
-            var dataLabel = new Label("数据:");
+            var dataLabel = new Label(T("extra.data"));
             dataLabel.style.width = 40;
             dataLabel.style.color = new StyleColor(Design.TextSecondary);
             dataRow.Add(dataLabel);
@@ -211,7 +211,7 @@ namespace YokiFrame.TableKit.Editor
 
             var dataBrowseBtn = new Button(() =>
             {
-                var path = EditorUtility.OpenFolderPanel("选择数据输出目录", target.dataDir, "");
+                var path = EditorUtility.OpenFolderPanel(T("extra.select.data"), target.dataDir, "");
                 if (!string.IsNullOrEmpty(path))
                 {
                     target.dataDir = path;
@@ -238,7 +238,7 @@ namespace YokiFrame.TableKit.Editor
             codeRow.style.marginTop = 4;
             item.Add(codeRow);
 
-            var codeLabel = new Label("代码:");
+            var codeLabel = new Label(T("extra.code"));
             codeLabel.style.width = 40;
             codeLabel.style.color = new StyleColor(Design.TextSecondary);
             codeRow.Add(codeLabel);
@@ -299,7 +299,7 @@ namespace YokiFrame.TableKit.Editor
 
             var codeBrowseBtn = new Button(() =>
             {
-                var path = EditorUtility.OpenFolderPanel("选择代码输出目录", target.codeDir, "");
+                var path = EditorUtility.OpenFolderPanel(T("extra.select.code"), target.codeDir, "");
                 if (!string.IsNullOrEmpty(path))
                 {
                     target.codeDir = path;

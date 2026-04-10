@@ -54,7 +54,7 @@ namespace YokiFrame.TableKit.Editor
             headerRow.style.marginBottom = 8;
             container.Add(headerRow);
 
-            var title = new Label("数据预览");
+            var title = new Label(T("preview.title"));
             title.style.fontSize = Design.FontSizeSection;
             title.style.unityFontStyleAndWeight = FontStyle.Bold;
             title.style.color = new StyleColor(Design.TextPrimary);
@@ -67,7 +67,7 @@ namespace YokiFrame.TableKit.Editor
             headerRow.Add(searchRow);
 
             // 验证配置按钮
-            var validateBtn = new Button(ValidateLuban) { text = "验证配置" };
+            var validateBtn = new Button(ValidateLuban) { text = T("preview.validate") };
             ApplySmallButtonStyle(validateBtn);
             validateBtn.style.marginRight = 8;
             searchRow.Add(validateBtn);
@@ -92,7 +92,7 @@ namespace YokiFrame.TableKit.Editor
             mDataPreviewContainer = new VisualElement();
             container.Add(mDataPreviewContainer);
 
-            var hint = new Label("点击「验证配置」后显示数据预览");
+            var hint = new Label(T("preview.hint"));
             hint.style.color = new StyleColor(Design.TextTertiary);
             hint.style.marginTop = 8;
             mDataPreviewContainer.Add(hint);
@@ -115,19 +115,19 @@ namespace YokiFrame.TableKit.Editor
 
             if (!Directory.Exists(dataDir))
             {
-                AddPreviewHint("验证数据目录不存在", Design.BrandDanger);
+                AddPreviewHint(T("preview.dir.missing"), Design.BrandDanger);
                 return;
             }
 
             var jsonFiles = Directory.GetFiles(dataDir, "*.json");
             if (jsonFiles.Length == 0)
             {
-                AddPreviewHint("没有找到 JSON 数据文件", Design.BrandDanger);
+                AddPreviewHint(T("preview.no.json"), Design.BrandDanger);
                 return;
             }
 
             mCachedJsonFiles = jsonFiles;
-            logBuilder.AppendLine($"[OK] 找到 {jsonFiles.Length} 个数据文件");
+            logBuilder.AppendLine(TF("log.preview.files", jsonFiles.Length));
 
             var fileNames = new List<string>();
             foreach (var file in jsonFiles) fileNames.Add(Path.GetFileNameWithoutExtension(file));
@@ -139,7 +139,7 @@ namespace YokiFrame.TableKit.Editor
             selectRow.style.marginTop = 8;
             mDataPreviewContainer.Add(selectRow);
 
-            var selectLabel = new Label("选择配置表:");
+            var selectLabel = new Label(T("preview.select"));
             selectLabel.style.width = 80;
             selectLabel.style.color = new StyleColor(Design.TextSecondary);
             selectRow.Add(selectLabel);
@@ -206,7 +206,7 @@ namespace YokiFrame.TableKit.Editor
                 var jsonNode = LubanNamespaceDetector.ParseJson(File.ReadAllText(jsonPath));
                 if (jsonNode == null)
                 {
-                    AddTreeError(container, "JSON 解析失败");
+                    AddTreeError(container, T("preview.json.fail"));
                     UpdateMatchLabel(0);
                     return;
                 }
@@ -231,7 +231,7 @@ namespace YokiFrame.TableKit.Editor
             }
             catch (Exception ex)
             {
-                AddTreeError(container, $"加载失败: {ex.Message}");
+                AddTreeError(container, TF("preview.load.fail", ex.Message));
                 UpdateMatchLabel(0);
             }
         }
@@ -247,7 +247,7 @@ namespace YokiFrame.TableKit.Editor
             else
             {
                 mDataPreviewMatchLabel.style.display = DisplayStyle.Flex;
-                mDataPreviewMatchLabel.text = count > 0 ? $"找到 {count} 处匹配" : "无匹配";
+                mDataPreviewMatchLabel.text = count > 0 ? TF("preview.match", count) : T("preview.no.match");
                 mDataPreviewMatchLabel.style.color = new StyleColor(count > 0 ? Design.BrandSuccess : Design.BrandWarning);
             }
         }

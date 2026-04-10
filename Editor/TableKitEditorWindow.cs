@@ -23,7 +23,13 @@ namespace YokiFrame.TableKit.Editor
 
         private void CreateGUI()
         {
-            mEditorUI = new TableKitEditorUI();
+            RebuildUI();
+        }
+
+        private void RebuildUI()
+        {
+            rootVisualElement.Clear();
+            mEditorUI = new TableKitEditorUI(RebuildUI);
             rootVisualElement.Add(mEditorUI.BuildUI());
         }
 

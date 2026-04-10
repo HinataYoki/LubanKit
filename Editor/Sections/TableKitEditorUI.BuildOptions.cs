@@ -27,7 +27,7 @@ namespace YokiFrame.TableKit.Editor
             container.style.paddingBottom = 12;
             container.style.marginBottom = 12;
 
-            var title = new Label("构建选项");
+            var title = new Label(T("build.title"));
             title.style.fontSize = Design.FontSizeSection;
             title.style.unityFontStyleAndWeight = FontStyle.Bold;
             title.style.color = new StyleColor(Design.TextPrimary);
@@ -52,7 +52,7 @@ namespace YokiFrame.TableKit.Editor
             asmRow.style.marginBottom = 4;
             toggleGroup.Add(asmRow);
 
-            mUseAssemblyToggle = CreateCapsuleToggle("使用独立程序集", mUseAssemblyDefinition, v =>
+            mUseAssemblyToggle = CreateCapsuleToggle(T("build.asm"), mUseAssemblyDefinition, v =>
             {
                 mUseAssemblyDefinition = v;
                 mAssemblyNameField?.SetEnabled(v);
@@ -60,7 +60,7 @@ namespace YokiFrame.TableKit.Editor
             });
             asmRow.Add(mUseAssemblyToggle);
 
-            var asmLabel = new Label("程序集名称:");
+            var asmLabel = new Label(T("build.asm.name"));
             asmLabel.style.marginLeft = 16;
             asmLabel.style.color = new StyleColor(Design.TextSecondary);
             asmRow.Add(asmLabel);
@@ -73,7 +73,7 @@ namespace YokiFrame.TableKit.Editor
             mAssemblyNameField.RegisterValueChangedCallback(evt => { mAssemblyName = evt.newValue; SavePrefs(); });
             asmRow.Add(mAssemblyNameField);
 
-            var asmHint = new Label("打开后生成的代码会放入独立程序集 (asmdef)");
+            var asmHint = new Label(T("build.asm.hint"));
             asmHint.style.fontSize = Design.FontSizeSmall;
             asmHint.style.color = new StyleColor(Design.TextTertiary);
             asmHint.style.marginBottom = 8;
@@ -88,20 +88,20 @@ namespace YokiFrame.TableKit.Editor
             extRow.style.marginBottom = 4;
             toggleGroup.Add(extRow);
 
-            mGenerateExternalTypeUtilToggle = CreateCapsuleToggle("生成 ExternalTypeUtil", mGenerateExternalTypeUtil, v =>
+            mGenerateExternalTypeUtilToggle = CreateCapsuleToggle(T("build.external"), mGenerateExternalTypeUtil, v =>
             {
                 mGenerateExternalTypeUtil = v;
                 SavePrefs();
             });
             extRow.Add(mGenerateExternalTypeUtilToggle);
 
-            var extHint = new Label("Luban vector 转 Unity Vector，如有需要可自行添加代码，不会重复生成覆盖");
+            var extHint = new Label(T("build.external.hint"));
             extHint.style.fontSize = Design.FontSizeSmall;
             extHint.style.color = new StyleColor(Design.TextTertiary);
             extHint.style.marginBottom = 4;
             toggleGroup.Add(extHint);
 
-            var extHint2 = new Label("注意：TableKit.cs 会被重复生成覆盖，请勿在其中添加自定义代码");
+            var extHint2 = new Label(T("build.external.warn"));
             extHint2.style.fontSize = Design.FontSizeSmall;
             extHint2.style.color = new StyleColor(Design.BrandWarning);
             toggleGroup.Add(extHint2);
@@ -116,20 +116,20 @@ namespace YokiFrame.TableKit.Editor
             asyncRow.style.marginBottom = 4;
             toggleGroup.Add(asyncRow);
 
-            mUseAsyncLoadingToggle = CreateCapsuleToggle("异步加载模式", mUseAsyncLoading, v =>
+            mUseAsyncLoadingToggle = CreateCapsuleToggle(T("build.async"), mUseAsyncLoading, v =>
             {
                 mUseAsyncLoading = v;
                 SavePrefs();
             });
             asyncRow.Add(mUseAsyncLoadingToggle);
 
-            var asyncHint = new Label("启用后生成 InitAsync() 方法，使用 UniTask 异步加载配置表数据");
+            var asyncHint = new Label(T("build.async.hint"));
             asyncHint.style.fontSize = Design.FontSizeSmall;
             asyncHint.style.color = new StyleColor(Design.TextTertiary);
             asyncHint.style.marginBottom = 4;
             toggleGroup.Add(asyncHint);
 
-            var asyncHint2 = new Label("需要项目已安装 UniTask 并定义 YOKIFRAME_UNITASK_SUPPORT");
+            var asyncHint2 = new Label(T("build.async.warn"));
             asyncHint2.style.fontSize = Design.FontSizeSmall;
             asyncHint2.style.color = new StyleColor(Design.BrandWarning);
             toggleGroup.Add(asyncHint2);

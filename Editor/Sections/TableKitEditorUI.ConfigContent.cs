@@ -43,7 +43,7 @@ namespace YokiFrame.TableKit.Editor
             arrow.style.marginRight = 6;
             header.Add(arrow);
 
-            var title = new Label("环境与路径配置");
+            var title = new Label(T("config.title"));
             title.style.fontSize = Design.FontSizeSection;
             title.style.unityFontStyleAndWeight = FontStyle.Bold;
             title.style.color = new StyleColor(Design.TextPrimary);
@@ -87,7 +87,7 @@ namespace YokiFrame.TableKit.Editor
         private void BuildConfigContent(VisualElement container)
         {
             // 警告 Callout
-            var warning = CreateCallout("Luban 工具不应放置在 Assets 内部，推荐放置在与 Assets 同级目录", Design.BrandWarning);
+            var warning = CreateCallout(T("config.warning"), Design.BrandWarning);
             warning.style.marginTop = 12;
             container.Add(warning);
 
@@ -98,33 +98,33 @@ namespace YokiFrame.TableKit.Editor
 
         private void BuildLubanSection(VisualElement container)
         {
-            var lubanSection = CreateSubSection("Luban 环境");
+            var lubanSection = CreateSubSection(T("config.luban"));
             container.Add(lubanSection);
 
-            lubanSection.Add(CreateValidatedPathRow("工作目录:", ref mLubanWorkDirField, mLubanWorkDir, path =>
+            lubanSection.Add(CreateValidatedPathRow(T("config.workdir"), ref mLubanWorkDirField, mLubanWorkDir, path =>
             {
                 mLubanWorkDir = path;
                 mLubanWorkDirField.value = path;
                 SavePrefs();
                 RefreshConfigStatus();
-            }, true, "选择包含 luban.conf 的目录"));
+            }, true, T("config.workdir.select")));
 
-            var workDirHint = new Label("包含 Datas、Defines、luban.conf 的文件夹");
+            var workDirHint = new Label(T("config.workdir.hint"));
             workDirHint.style.fontSize = Design.FontSizeSmall;
             workDirHint.style.color = new StyleColor(Design.TextTertiary);
             workDirHint.style.marginTop = 2;
             workDirHint.style.marginLeft = 80;
             lubanSection.Add(workDirHint);
 
-            lubanSection.Add(CreateValidatedFileRow("Luban.dll:", ref mLubanDllPathField, mLubanDllPath, path =>
+            lubanSection.Add(CreateValidatedFileRow(T("config.dll"), ref mLubanDllPathField, mLubanDllPath, path =>
             {
                 mLubanDllPath = path;
                 mLubanDllPathField.value = path;
                 SavePrefs();
                 RefreshConfigStatus();
-            }, "dll", "选择 Luban.dll"));
+            }, "dll", T("config.dll.select")));
 
-            var dllHint = new Label("Luban 代码生成工具的 DLL 路径");
+            var dllHint = new Label(T("config.dll.hint"));
             dllHint.style.fontSize = Design.FontSizeSmall;
             dllHint.style.color = new StyleColor(Design.TextTertiary);
             dllHint.style.marginTop = 2;
@@ -134,7 +134,7 @@ namespace YokiFrame.TableKit.Editor
 
         private void BuildOutputSection(VisualElement container)
         {
-            var outputSection = CreateSubSection("输出路径");
+            var outputSection = CreateSubSection(T("config.output"));
             container.Add(outputSection);
 
             // Data Target
@@ -144,7 +144,7 @@ namespace YokiFrame.TableKit.Editor
             dataRow.style.marginTop = 8;
             outputSection.Add(dataRow);
 
-            var dataLabel = new Label("数据格式:");
+            var dataLabel = new Label(T("config.data.target"));
             dataLabel.style.width = 80;
             dataLabel.style.color = new StyleColor(Design.TextSecondary);
             dataRow.Add(dataLabel);
@@ -165,7 +165,7 @@ namespace YokiFrame.TableKit.Editor
             });
             dataRow.Add(mDataTargetDropdown);
 
-            outputSection.Add(CreateValidatedPathRow("数据输出:", ref mOutputDataDirField, mOutputDataDir, path =>
+            outputSection.Add(CreateValidatedPathRow(T("config.data.output"), ref mOutputDataDirField, mOutputDataDir, path =>
             {
                 mOutputDataDir = path;
                 mOutputDataDirField.value = path;
@@ -176,24 +176,24 @@ namespace YokiFrame.TableKit.Editor
                 }
                 SavePrefs();
                 RefreshConfigStatus();
-            }, false, "选择数据输出目录"));
+            }, false, T("config.data.output.select")));
 
-            var dataOutputHint = new Label("生成的配置数据文件存放路径，默认 Assets/Resources/Art/Table/");
+            var dataOutputHint = new Label(T("config.data.output.hint"));
             dataOutputHint.style.fontSize = Design.FontSizeSmall;
             dataOutputHint.style.color = new StyleColor(Design.TextTertiary);
             dataOutputHint.style.marginTop = 2;
             dataOutputHint.style.marginLeft = 80;
             outputSection.Add(dataOutputHint);
 
-            outputSection.Add(CreateValidatedPathRow("代码输出:", ref mOutputCodeDirField, mOutputCodeDir, path =>
+            outputSection.Add(CreateValidatedPathRow(T("config.code.output"), ref mOutputCodeDirField, mOutputCodeDir, path =>
             {
                 mOutputCodeDir = path;
                 mOutputCodeDirField.value = path;
                 SavePrefs();
                 RefreshConfigStatus();
-            }, false, "选择代码输出目录"));
+            }, false, T("config.code.output.select")));
 
-            var codeOutputHint = new Label("生成的 C# 配置表代码存放路径");
+            var codeOutputHint = new Label(T("config.code.output.hint"));
             codeOutputHint.style.fontSize = Design.FontSizeSmall;
             codeOutputHint.style.color = new StyleColor(Design.TextTertiary);
             codeOutputHint.style.marginTop = 2;
@@ -206,7 +206,7 @@ namespace YokiFrame.TableKit.Editor
 
         private void BuildTableKitSection(VisualElement container)
         {
-            var tkSection = CreateSubSection("TableKit 路径");
+            var tkSection = CreateSubSection(T("config.tablekit"));
             container.Add(tkSection);
 
             // 自定义编辑器数据路径 Toggle
@@ -217,7 +217,7 @@ namespace YokiFrame.TableKit.Editor
             customEditorPathRow.style.marginBottom = 4;
             tkSection.Add(customEditorPathRow);
 
-            mCustomEditorDataPathToggle = CreateCapsuleToggle("自定义编辑器数据路径", mCustomEditorDataPath, v =>
+            mCustomEditorDataPathToggle = CreateCapsuleToggle(T("config.custom.editor"), mCustomEditorDataPath, v =>
             {
                 mCustomEditorDataPath = v;
                 mEditorDataPathRow?.SetEnabled(v);
@@ -230,7 +230,7 @@ namespace YokiFrame.TableKit.Editor
             });
             customEditorPathRow.Add(mCustomEditorDataPathToggle);
 
-            var customEditorPathHint = new Label("关闭时编辑器数据路径自动跟随数据输出路径");
+            var customEditorPathHint = new Label(T("config.custom.editor.hint"));
             customEditorPathHint.style.fontSize = Design.FontSizeSmall;
             customEditorPathHint.style.color = new StyleColor(Design.TextTertiary);
             customEditorPathHint.style.marginBottom = 8;
@@ -240,14 +240,14 @@ namespace YokiFrame.TableKit.Editor
             mEditorDataPathRow = new VisualElement();
             tkSection.Add(mEditorDataPathRow);
 
-            mEditorDataPathRow.Add(CreateValidatedPathRow("编辑器数据:", ref mEditorDataPathField, mEditorDataPath, path =>
+            mEditorDataPathRow.Add(CreateValidatedPathRow(T("config.editor.data"), ref mEditorDataPathField, mEditorDataPath, path =>
             {
                 mEditorDataPath = path;
                 mEditorDataPathField.value = path;
                 SavePrefs();
-            }, false, "选择编辑器数据路径"));
+            }, false, T("config.editor.data.select")));
 
-            var editorDataHint = new Label("TableKit.TablesEditor 编辑器访问用的表数据路径");
+            var editorDataHint = new Label(T("config.editor.data.hint"));
             editorDataHint.style.fontSize = Design.FontSizeSmall;
             editorDataHint.style.color = new StyleColor(Design.TextTertiary);
             editorDataHint.style.marginTop = 2;
@@ -262,7 +262,7 @@ namespace YokiFrame.TableKit.Editor
             runtimeRow.style.marginTop = 8;
             tkSection.Add(runtimeRow);
 
-            var runtimeLabel = new Label("运行时模式:");
+            var runtimeLabel = new Label(T("config.runtime.mode"));
             runtimeLabel.style.width = 80;
             runtimeLabel.style.color = new StyleColor(Design.TextSecondary);
             runtimeRow.Add(runtimeLabel);
@@ -278,7 +278,7 @@ namespace YokiFrame.TableKit.Editor
             mRuntimePathPatternField.RegisterValueChangedCallback(evt => { mRuntimePathPattern = evt.newValue; SavePrefs(); });
             runtimeFieldContainer.Add(mRuntimePathPatternField);
 
-            var hint = new Label("{0} 为文件名占位符 • 可寻址模式填 {0} • 完整路径填 Assets/Art/Table/{0}");
+            var hint = new Label(T("config.runtime.hint"));
             hint.style.fontSize = Design.FontSizeSmall;
             hint.style.color = new StyleColor(Design.TextTertiary);
             hint.style.marginTop = 4;

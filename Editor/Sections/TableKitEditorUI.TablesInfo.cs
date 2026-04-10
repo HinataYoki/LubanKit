@@ -40,7 +40,7 @@ namespace YokiFrame.TableKit.Editor
             header.style.borderBottomColor = new StyleColor(Design.BorderDefault);
             container.Add(header);
 
-            var title = new Label("配置表信息");
+            var title = new Label(T("tables.title"));
             title.style.fontSize = Design.FontSizeSection;
             title.style.unityFontStyleAndWeight = FontStyle.Bold;
             title.style.color = new StyleColor(Design.TextPrimary);
@@ -53,7 +53,7 @@ namespace YokiFrame.TableKit.Editor
             header.Add(rightContainer);
 
             // 刷新缓存按钮
-            var refreshBtn = new Button(RefreshEditorCache) { text = "刷新缓存" };
+            var refreshBtn = new Button(RefreshEditorCache) { text = T("tables.refresh") };
             ApplySmallButtonStyle(refreshBtn);
             refreshBtn.style.marginRight = 8;
             rightContainer.Add(refreshBtn);
@@ -64,7 +64,7 @@ namespace YokiFrame.TableKit.Editor
             searchContainer.style.alignItems = Align.Center;
             rightContainer.Add(searchContainer);
 
-            var searchIcon = new Label("[搜索]");
+            var searchIcon = new Label(T("tables.search"));
             searchIcon.style.marginRight = 4;
             searchIcon.style.fontSize = Design.FontSizeSmall;
             searchIcon.style.color = new StyleColor(Design.TextTertiary);
@@ -74,7 +74,7 @@ namespace YokiFrame.TableKit.Editor
             mTablesSearchField.style.width = 180;
             mTablesSearchField.style.height = 22;
             // 设置占位符样式
-            var placeholder = "搜索表名...";
+            var placeholder = T("tables.placeholder");
             mTablesSearchField.value = placeholder;
             mTablesSearchField.style.color = new StyleColor(Design.TextTertiary);
 
@@ -118,7 +118,7 @@ namespace YokiFrame.TableKit.Editor
             scrollView.style.flexGrow = 1;
             mTablesInfoContainer.Add(scrollView);
 
-            var hint = new Label("点击「刷新缓存」加载配置表信息");
+            var hint = new Label(T("tables.hint"));
             hint.style.color = new StyleColor(Design.TextTertiary);
             hint.style.marginTop = 8;
             scrollView.Add(hint);

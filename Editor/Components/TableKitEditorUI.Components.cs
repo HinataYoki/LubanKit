@@ -180,7 +180,7 @@ namespace YokiFrame.TableKit.Editor
                 if (Directory.Exists(fullPath))
                     EditorUtility.RevealInFinder(fullPath);
                 else
-                    EditorUtility.DisplayDialog("提示", $"目录不存在:\n{fullPath}", "确定");
+                    EditorUtility.DisplayDialog(T("dialog.info"), TF("dialog.dir.missing", fullPath), T("dialog.ok"));
             }) { text = "↗" };
 
             btn.style.width = 24;
@@ -189,7 +189,7 @@ namespace YokiFrame.TableKit.Editor
             btn.style.backgroundColor = new StyleColor(Design.LayerElevated);
             btn.style.borderTopLeftRadius = btn.style.borderTopRightRadius = 4;
             btn.style.borderBottomLeftRadius = btn.style.borderBottomRightRadius = 4;
-            btn.tooltip = "在资源管理器中打开";
+            btn.tooltip = T("open.finder");
 
             return btn;
         }

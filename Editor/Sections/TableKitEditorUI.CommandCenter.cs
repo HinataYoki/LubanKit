@@ -35,11 +35,18 @@ namespace YokiFrame.TableKit.Editor
             titleRow.style.marginBottom = 12;
             container.Add(titleRow);
 
-            var title = new Label("TableKit 配置表生成");
+            var title = new Label(T("command.title"));
             title.style.fontSize = Design.FontSizeTitle;
             title.style.unityFontStyleAndWeight = FontStyle.Bold;
             title.style.color = new StyleColor(Design.TextPrimary);
             titleRow.Add(title);
+
+            var langBtn = new Button(ToggleLanguage) { text = T("lang.button") };
+            ApplySecondaryButtonStyle(langBtn);
+            langBtn.style.height = 24;
+            langBtn.style.marginLeft = 8;
+            langBtn.tooltip = T("lang.tooltip");
+            titleRow.Add(langBtn);
 
             // 主内容行
             var mainRow = new VisualElement();
@@ -110,20 +117,20 @@ namespace YokiFrame.TableKit.Editor
             container.style.alignItems = Align.Center;
 
             // 还原默认设置按钮
-            var resetBtn = new Button(ResetToDefaults) { text = "还原默认" };
+            var resetBtn = new Button(ResetToDefaults) { text = T("command.reset") };
             ApplySecondaryButtonStyle(resetBtn);
-            resetBtn.tooltip = "还原所有配置为默认值";
+            resetBtn.tooltip = T("command.reset.tooltip");
             container.Add(resetBtn);
 
             // 打开配置表目录
-            var openBtn = new Button(OpenLubanFolder) { text = "打开配置表" };
+            var openBtn = new Button(OpenLubanFolder) { text = T("command.open") };
             openBtn.style.marginLeft = 4;
             ApplySecondaryButtonStyle(openBtn);
-            openBtn.tooltip = "打开 Luban 配置表数据目录 (Datas)";
+            openBtn.tooltip = T("command.open.tooltip");
             container.Add(openBtn);
 
             // 生成按钮
-            mGenerateBtn = new Button(GenerateLuban) { text = "生成配置表" };
+            mGenerateBtn = new Button(GenerateLuban) { text = T("command.generate") };
             mGenerateBtn.style.height = 28;
             mGenerateBtn.style.paddingLeft = 16;
             mGenerateBtn.style.paddingRight = 16;

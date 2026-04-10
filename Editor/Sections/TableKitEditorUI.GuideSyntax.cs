@@ -169,17 +169,24 @@ namespace YokiFrame.TableKit.Editor
 
         #region 指南代码常量
 
-        private const string GUIDE_CODE_BASIC =
-"// 同步访问配置表（首次访问自动调用 Init）\n" +
-"var tables = TableKit.Tables;\n" +
-"\n" +
-"// 编辑器访问配置表\n" +
-"#if UNITY_EDITOR\n" +
-"var editorTables = TableKit.TablesEditor;\n" +
-"#endif";
+        private string GetGuideCodeBasic() => mLanguage == UILanguage.Chinese
+? "// 同步访问配置表（首次访问自动调用 Init）\n" +
+  "var tables = TableKit.Tables;\n" +
+  "\n" +
+  "// 编辑器访问配置表\n" +
+  "#if UNITY_EDITOR\n" +
+  "var editorTables = TableKit.TablesEditor;\n" +
+  "#endif"
+: "// Synchronous table access (first access calls Init automatically)\n" +
+  "var tables = TableKit.Tables;\n" +
+  "\n" +
+  "// Editor-side table access\n" +
+  "#if UNITY_EDITOR\n" +
+  "var editorTables = TableKit.TablesEditor;\n" +
+  "#endif";
 
-        private const string GUIDE_CODE_CUSTOM_LOADER =
-@"// 实现 ITableLoader 接口
+        private string GetGuideCodeCustomLoader() => mLanguage == UILanguage.Chinese
+? @"// 实现 ITableLoader 接口
 public class MyTableLoader : ITableLoader
 {
     public byte[] Load(string tableName)
@@ -190,10 +197,22 @@ public class MyTableLoader : ITableLoader
 }
 
 // 初始化时设置加载器
+TableKit.SetLoader(new MyTableLoader());"
+: @"// Implement ITableLoader
+public class MyTableLoader : ITableLoader
+{
+    public byte[] Load(string tableName)
+    {
+        // Custom loading logic
+        return yourLoadMethod(tableName);
+    }
+}
+
+// Assign the loader during initialization
 TableKit.SetLoader(new MyTableLoader());";
 
-        private const string GUIDE_CODE_YOOASSET =
-@"using YooAsset;
+        private string GetGuideCodeYooAsset() => mLanguage == UILanguage.Chinese
+? @"using YooAsset;
 
 public class YooAssetTableLoader : ITableLoader
 {
@@ -218,35 +237,87 @@ public class YooAssetTableLoader : ITableLoader
 
 // 使用示例
 var package = YooAssets.GetPackage(""DefaultPackage"");
+TableKit.SetLoader(new YooAssetTableLoader(package, ""Art/Table/{0}""));"
+: @"using YooAsset;
+
+public class YooAssetTableLoader : ITableLoader
+{
+    private readonly ResourcePackage mPackage;
+    private readonly string mPathPattern;
+
+    public YooAssetTableLoader(ResourcePackage package, string pathPattern = ""{0}"")
+    {
+        mPackage = package;
+        mPathPattern = pathPattern;
+    }
+
+    public byte[] Load(string tableName)
+    {
+        var path = string.Format(mPathPattern, tableName);
+        var handle = mPackage.LoadRawFileSync(path);
+        var data = handle.GetRawFileData();
+        handle.Release();
+        return data;
+    }
+}
+
+// Example
+var package = YooAssets.GetPackage(""DefaultPackage"");
 TableKit.SetLoader(new YooAssetTableLoader(package, ""Art/Table/{0}""));";
 
-        private static readonly string[] GUIDE_NOTES =
-        {
-            "• 运行时模式路径需与数据输出路径对应",
-            "• 使用 Resources 时，数据需放在 Resources 文件夹下",
-            "• 使用 YooAsset 时，确保资源已正确打包",
-            "• 编辑器数据路径默认跟随数据输出目录"
-        };
+        private string[] GetGuideNotes() => mLanguage == UILanguage.Chinese
+            ? new[]
+            {
+                "• 运行时模式路径需与数据输出路径对应",
+                "• 使用 Resources 时，数据需放在 Resources 文件夹下",
+                "• 使用 YooAsset 时，确保资源已正确打包",
+                "• 编辑器数据路径默认跟随数据输出目录"
+            }
+            : new[]
+            {
+                "• The runtime path pattern should match your data output layout",
+                "• When using Resources, place generated data under a Resources folder",
+                "• When using YooAsset, make sure the assets are built and packed correctly",
+                "• The editor data path follows the data output path by default"
+            };
 
-        private const string GUIDE_CODE_ASYNC =
-"// 异步初始化（需开启「异步加载模式」并安装 UniTask）\n" +
-"// 先异步加载所有表数据到缓存，再同步构造 Tables\n" +
-"await TableKit.InitAsync(destroyCancellationToken);\n" +
-"\n" +
-"// 自定义异步加载器（在 InitAsync 之前调用）\n" +
-"TableKit.SetAsyncBinaryLoader(async (fileName, ct) =>\n" +
-"{\n" +
-"    return await YourAsyncLoadMethod(fileName, ct);\n" +
-"});\n" +
-"\n" +
-"// 覆盖表文件名列表（可选，默认使用生成时嵌入的列表）\n" +
-"TableKit.SetTableFileNames(new[] { \"tb_item\", \"tb_config\" });\n" +
-"\n" +
-"// 异步重新加载（热更新后使用）\n" +
-"await TableKit.ReloadAsync(destroyCancellationToken);\n" +
-"\n" +
-"// 注意：如果未调用 InitAsync，首次访问 TableKit.Tables\n" +
-"// 将自动触发同步 Init() 加载";
+        private string GetGuideCodeAsync() => mLanguage == UILanguage.Chinese
+? "// 异步初始化（需开启「异步加载模式」并安装 UniTask）\n" +
+  "// 先异步加载所有表数据到缓存，再同步构造 Tables\n" +
+  "await TableKit.InitAsync(destroyCancellationToken);\n" +
+  "\n" +
+  "// 自定义异步加载器（在 InitAsync 之前调用）\n" +
+  "TableKit.SetAsyncBinaryLoader(async (fileName, ct) =>\n" +
+  "{\n" +
+  "    return await YourAsyncLoadMethod(fileName, ct);\n" +
+  "});\n" +
+  "\n" +
+  "// 覆盖表文件名列表（可选，默认使用生成时嵌入的列表）\n" +
+  "TableKit.SetTableFileNames(new[] { \"tb_item\", \"tb_config\" });\n" +
+  "\n" +
+  "// 异步重新加载（热更新后使用）\n" +
+  "await TableKit.ReloadAsync(destroyCancellationToken);\n" +
+  "\n" +
+  "// 注意：如果未调用 InitAsync，首次访问 TableKit.Tables\n" +
+  "// 将自动触发同步 Init() 加载"
+: "// Async initialization (requires Async Loading Mode + UniTask)\n" +
+  "// Preload all table files asynchronously, then build Tables synchronously\n" +
+  "await TableKit.InitAsync(destroyCancellationToken);\n" +
+  "\n" +
+  "// Custom async loader (set before InitAsync)\n" +
+  "TableKit.SetAsyncBinaryLoader(async (fileName, ct) =>\n" +
+  "{\n" +
+  "    return await YourAsyncLoadMethod(fileName, ct);\n" +
+  "});\n" +
+  "\n" +
+  "// Override table file names (optional, defaults to embedded generated list)\n" +
+  "TableKit.SetTableFileNames(new[] { \"tb_item\", \"tb_config\" });\n" +
+  "\n" +
+  "// Async reload (use after hot update)\n" +
+  "await TableKit.ReloadAsync(destroyCancellationToken);\n" +
+  "\n" +
+  "// Note: if InitAsync is not called, first access to TableKit.Tables\n" +
+  "// will fall back to synchronous Init()";
 
         #endregion
     }

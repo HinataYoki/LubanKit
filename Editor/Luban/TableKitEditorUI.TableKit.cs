@@ -40,13 +40,13 @@ namespace YokiFrame.TableKit.Editor
                 var tables = tableKitType.GetProperty("TablesEditor")?.GetValue(null);
                 RefreshTablesInfo(tables);
 
-                mLogContent.value = $"[{DateTime.Now:HH:mm:ss}] [OK] 编辑器缓存已刷新";
+                mLogContent.value = TF("log.editor.cache.refreshed", DateTime.Now);
                 UpdateStatusBanner(BuildStatus.Success);
                 SaveConsoleLog(); // 持久化刷新日志
             }
             catch (Exception ex)
             {
-                mLogContent.value = $"[{DateTime.Now:HH:mm:ss}] [FAIL] 加载配置表失败:\n{ex.Message}";
+                mLogContent.value = TF("log.editor.load.failed", DateTime.Now, ex.Message);
                 UpdateStatusBanner(BuildStatus.Failed);
             }
             finally
@@ -73,7 +73,7 @@ namespace YokiFrame.TableKit.Editor
 
             if (tables == null)
             {
-                var hint = new Label("配置表未加载");
+                var hint = new Label(T("tables.not.loaded"));
                 hint.style.color = new StyleColor(Design.BrandDanger);
                 hint.style.marginTop = 8;
                 mTablesInfoContainer.Add(hint);
@@ -132,17 +132,17 @@ namespace YokiFrame.TableKit.Editor
 
             if (string.IsNullOrEmpty(searchText))
             {
-                statsLabel.text = $"共 {totalCount} 个配置表";
+                statsLabel.text = TF("tables.stats.total", totalCount);
             }
             else
             {
-                statsLabel.text = $"找到 {matchCount}/{totalCount} 个匹配项";
+                statsLabel.text = TF("tables.stats.match", matchCount, totalCount);
             }
             mTablesInfoContainer.Add(statsLabel);
 
             if (matchCount == 0 && !string.IsNullOrEmpty(searchText))
             {
-                var noResult = new Label("没有找到匹配的配置表");
+                var noResult = new Label(T("tables.no.match"));
                 noResult.style.color = new StyleColor(Design.BrandWarning);
                 noResult.style.marginTop = 8;
                 scrollView.Add(noResult);

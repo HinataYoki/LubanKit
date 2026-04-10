@@ -46,7 +46,7 @@ namespace YokiFrame.TableKit.Editor
             arrow.style.marginRight = 6;
             header.Add(arrow);
 
-            var title = new Label("使用指南");
+            var title = new Label(T("guide.title"));
             title.style.fontSize = Design.FontSizeSection;
             title.style.unityFontStyleAndWeight = FontStyle.Bold;
             title.style.color = new StyleColor(Design.TextPrimary);
@@ -84,43 +84,39 @@ namespace YokiFrame.TableKit.Editor
         private void BuildGuideContent(VisualElement container)
         {
             // 基础用法
-            var basicSection = CreateGuideSection("基础用法 (Resources 加载)");
+            var basicSection = CreateGuideSection(T("guide.basic.title"));
             basicSection.style.marginTop = 12;
             container.Add(basicSection);
 
-            AddGuideDescription(basicSection, "TableKit 默认使用 Resources.Load 加载配置数据，无需额外配置：");
-            basicSection.Add(CreateCodeBlock(GUIDE_CODE_BASIC));
+            AddGuideDescription(basicSection, T("guide.basic.desc"));
+            basicSection.Add(CreateCodeBlock(GetGuideCodeBasic()));
 
             // 自定义加载器
-            var customSection = CreateGuideSection("自定义加载器");
+            var customSection = CreateGuideSection(T("guide.custom.title"));
             container.Add(customSection);
 
-            AddGuideDescription(customSection, "如需使用 Addressables 或 YooAsset 等资源管理方案，可实现自定义加载器：");
-            customSection.Add(CreateCodeBlock(GUIDE_CODE_CUSTOM_LOADER));
+            AddGuideDescription(customSection, T("guide.custom.desc"));
+            customSection.Add(CreateCodeBlock(GetGuideCodeCustomLoader()));
 
             // YooAsset 示例
-            var yooSection = CreateGuideSection("YooAsset 加载器示例");
+            var yooSection = CreateGuideSection(T("guide.yoo.title"));
             container.Add(yooSection);
 
-            AddGuideDescription(yooSection, "使用 YooAsset 加载配置表的完整实现：");
-            yooSection.Add(CreateCodeBlock(GUIDE_CODE_YOOASSET));
+            AddGuideDescription(yooSection, T("guide.yoo.desc"));
+            yooSection.Add(CreateCodeBlock(GetGuideCodeYooAsset()));
 
             // 异步加载
-            var asyncSection = CreateGuideSection("异步加载模式");
+            var asyncSection = CreateGuideSection(T("guide.async.title"));
             container.Add(asyncSection);
 
-            AddGuideDescription(asyncSection,
-                "开启构建选项中的「异步加载模式」后，生成的代码包含 InitAsync 异步初始化方法。" +
-                "可通过 SetAsyncBinaryLoader/SetAsyncJsonLoader 自定义异步加载方式，" +
-                "通过 SetTableFileNames 覆盖预加载的文件列表。" +
-                "如果不显式调用 InitAsync，首次访问 TableKit.Tables 时将自动触发同步 Init() 加载：");
-            asyncSection.Add(CreateCodeBlock(GUIDE_CODE_ASYNC));
+            AddGuideDescription(asyncSection, T("guide.async.desc"));
+            asyncSection.Add(CreateCodeBlock(GetGuideCodeAsync()));
 
             // 注意事项
-            var noteSection = CreateGuideSection("注意事项");
+            var noteSection = CreateGuideSection(T("guide.note.title"));
             container.Add(noteSection);
 
-            foreach (var note in GUIDE_NOTES)
+            foreach (var note in GetGuideNotes())
             {
                 var noteLabel = new Label(note);
                 noteLabel.style.color = new StyleColor(Design.TextSecondary);

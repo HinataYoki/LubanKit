@@ -27,7 +27,7 @@ namespace YokiFrame.TableKit.Editor
             UpdateStatusBanner(BuildStatus.Building);
 
             var logBuilder = new StringBuilder();
-            logBuilder.AppendLine($"[{DateTime.Now:HH:mm:ss}] 开始{(validateOnly ? "验证" : "生成")}...");
+            logBuilder.AppendLine(TF("log.start", DateTime.Now, T(validateOnly ? "log.action.validate" : "log.action.generate")));
 
             var projectRoot = Path.GetDirectoryName(Application.dataPath);
             var workDir = Path.IsPathRooted(mLubanWorkDir) ? mLubanWorkDir : Path.Combine(projectRoot, mLubanWorkDir);
@@ -68,7 +68,7 @@ namespace YokiFrame.TableKit.Editor
                         if (!success)
                         {
                             allSuccess = false;
-                            logBuilder.AppendLine($"[批次 {runIndex}] 生成失败，停止后续批次");
+                            logBuilder.AppendLine(TF("log.batch.failed", runIndex));
                             break;
                         }
 
@@ -80,7 +80,7 @@ namespace YokiFrame.TableKit.Editor
                     {
                         EnsureRequiredFiles(logBuilder);
                         AssetDatabase.Refresh();
-                        logBuilder.AppendLine("\n[OK] 已刷新 Unity 资源数据库");
+                        logBuilder.AppendLine(T("log.refresh.db"));
                     }
                 }
 
@@ -88,7 +88,7 @@ namespace YokiFrame.TableKit.Editor
             }
             catch (Exception ex)
             {
-                logBuilder.AppendLine($"[异常] {ex.Message}");
+                logBuilder.AppendLine(TF("log.exception", ex.Message));
                 logBuilder.AppendLine(ex.StackTrace);
                 UpdateStatusBanner(BuildStatus.Failed);
                 Debug.LogException(ex);
@@ -149,7 +149,7 @@ namespace YokiFrame.TableKit.Editor
             }
 
             logBuilder.AppendLine("───────────────────────────────");
-            logBuilder.AppendLine($"[{DateTime.Now:HH:mm:ss}] 退出码: {exitCode}");
+            logBuilder.AppendLine(TF("log.exit.code", DateTime.Now, exitCode));
 
             return exitCode == 0;
         }
@@ -169,7 +169,7 @@ namespace YokiFrame.TableKit.Editor
             var extraTarget = mExtraOutputTargets[targetIndex];
             if (!extraTarget.enabled)
             {
-                EditorUtility.DisplayDialog("提示", "此目标已禁用", "确定");
+                EditorUtility.DisplayDialog(T("dialog.info"), T("extra.disabled"), T("dialog.ok"));
                 return;
             }
 
@@ -177,7 +177,7 @@ namespace YokiFrame.TableKit.Editor
             UpdateStatusBanner(BuildStatus.Building);
 
             var logBuilder = new StringBuilder();
-            logBuilder.AppendLine($"[{DateTime.Now:HH:mm:ss}] 单独生成目标: {extraTarget.name}");
+            logBuilder.AppendLine(TF("log.single.target", DateTime.Now, extraTarget.name));
 
             var projectRoot = Path.GetDirectoryName(Application.dataPath);
             var workDir = Path.IsPathRooted(mLubanWorkDir) ? mLubanWorkDir : Path.Combine(projectRoot, mLubanWorkDir);
@@ -206,14 +206,14 @@ namespace YokiFrame.TableKit.Editor
                 if (success)
                 {
                     AssetDatabase.Refresh();
-                    logBuilder.AppendLine("\n[OK] 已刷新 Unity 资源数据库");
+                    logBuilder.AppendLine(T("log.refresh.db"));
                 }
 
                 UpdateStatusBanner(success ? BuildStatus.Success : BuildStatus.Failed);
             }
             catch (Exception ex)
             {
-                logBuilder.AppendLine($"[异常] {ex.Message}");
+                logBuilder.AppendLine(TF("log.exception", ex.Message));
                 logBuilder.AppendLine(ex.StackTrace);
                 UpdateStatusBanner(BuildStatus.Failed);
                 Debug.LogException(ex);
@@ -237,20 +237,20 @@ namespace YokiFrame.TableKit.Editor
 
             if (string.IsNullOrEmpty(mLubanWorkDir) || !Directory.Exists(workDir))
             {
-                EditorUtility.DisplayDialog("配置错误", $"Luban 工作目录不存在\n路径: {workDir}", "确定");
+                EditorUtility.DisplayDialog(T("dialog.error"), TF("dialog.workdir.invalid", workDir), T("dialog.ok"));
                 return false;
             }
 
             if (!File.Exists(Path.Combine(workDir, "luban.conf")))
             {
-                EditorUtility.DisplayDialog("配置错误", $"找不到 luban.conf 文件\n路径: {Path.Combine(workDir, "luban.conf")}", "确定");
+                EditorUtility.DisplayDialog(T("dialog.error"), TF("dialog.conf.missing", Path.Combine(workDir, "luban.conf")), T("dialog.ok"));
                 return false;
             }
 
             var dllPath = Path.IsPathRooted(mLubanDllPath) ? mLubanDllPath : Path.Combine(projectRoot, mLubanDllPath);
             if (string.IsNullOrEmpty(mLubanDllPath) || !File.Exists(dllPath))
             {
-                EditorUtility.DisplayDialog("配置错误", $"Luban.dll 路径无效\n路径: {dllPath}", "确定");
+                EditorUtility.DisplayDialog(T("dialog.error"), TF("dialog.dll.invalid", dllPath), T("dialog.ok"));
                 return false;
             }
 
@@ -268,7 +268,7 @@ namespace YokiFrame.TableKit.Editor
             else if (!string.IsNullOrEmpty(workDir) && Directory.Exists(workDir))
                 EditorUtility.OpenWithDefaultApp(workDir);
             else
-                EditorUtility.DisplayDialog("提示", $"Luban 工作目录未配置或不存在\n路径: {workDir}", "确定");
+                EditorUtility.DisplayDialog(T("dialog.info"), TF("dialog.workdir.unset", workDir), T("dialog.ok"));
         }
 
         private void EnsureRequiredFiles(StringBuilder logBuilder)
@@ -281,14 +281,14 @@ namespace YokiFrame.TableKit.Editor
             var lubanCodeDir = Path.Combine(codeDir, "Luban");
             if (!Directory.Exists(lubanCodeDir)) Directory.CreateDirectory(lubanCodeDir);
 
-            logBuilder.AppendLine("正在生成 TableKit 运行时代码...");
+            logBuilder.AppendLine(T("log.gen.runtime"));
             TableKitCodeGenerator.Generate(codeDir, mUseAssemblyDefinition, mGenerateExternalTypeUtil,
                 mAssemblyName, "cfg", mRuntimePathPattern, mEditorDataPath, mCodeTarget,
                 mUseAsyncLoading, mOutputDataDir, mDataTarget);
-            logBuilder.AppendLine("[OK] TableKit 运行时代码生成完成");
-            if (mUseAsyncLoading) logBuilder.AppendLine("[OK] 已生成异步加载代码 (InitAsync/ReloadAsync)");
+            logBuilder.AppendLine(T("log.gen.runtime.done"));
+            if (mUseAsyncLoading) logBuilder.AppendLine(T("log.gen.async.done"));
 
-            if (mGenerateExternalTypeUtil) logBuilder.AppendLine("[OK] 已生成 ExternalTypeUtil.cs");
+            if (mGenerateExternalTypeUtil) logBuilder.AppendLine(T("log.gen.external.done"));
         }
 
         #endregion

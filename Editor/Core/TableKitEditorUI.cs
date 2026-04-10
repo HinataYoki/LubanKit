@@ -158,6 +158,7 @@ namespace YokiFrame.TableKit.Editor
         /// </summary>
         public VisualElement BuildUI()
         {
+            LoadLanguage();
             LoadPrefs();
 
             var root = new VisualElement();
@@ -246,7 +247,7 @@ namespace YokiFrame.TableKit.Editor
         /// <summary>
         /// 加载持久化的控制台日志
         /// </summary>
-        private string LoadConsoleLog() => EditorPrefs.GetString(PREF_CONSOLE_LOG, "等待操作...");
+        private string LoadConsoleLog() => EditorPrefs.GetString(PREF_CONSOLE_LOG, T("console.waiting"));
 
         public void SavePrefs()
         {
@@ -288,7 +289,7 @@ namespace YokiFrame.TableKit.Editor
         /// </summary>
         private void ResetToDefaults()
         {
-            if (!EditorUtility.DisplayDialog("还原默认设置", "确定要将所有配置还原为默认值吗？", "确定", "取消"))
+            if (!EditorUtility.DisplayDialog(T("dialog.reset.title"), T("dialog.reset.message"), T("dialog.ok"), T("dialog.cancel")))
                 return;
 
             ApplyDefaultValues();
@@ -323,7 +324,7 @@ namespace YokiFrame.TableKit.Editor
             SavePrefs();
             RefreshConfigStatus();
 
-            mLogContent.value = $"[{System.DateTime.Now:HH:mm:ss}] 已还原为默认设置";
+            mLogContent.value = TF("log.reset", System.DateTime.Now);
         }
 
         #endregion

@@ -73,7 +73,7 @@ namespace YokiFrame.TableKit.Editor
                 }
             }) { text = "..." };
             ApplyBrowseButtonStyle(browseBtn);
-            browseBtn.tooltip = "浏览文件夹";
+            browseBtn.tooltip = T("browse.folder");
             btnContainer.Add(browseBtn);
 
             var openBtn = CreateOpenFolderButton(() => field.value);
@@ -131,7 +131,7 @@ namespace YokiFrame.TableKit.Editor
                 }
             }) { text = "..." };
             ApplyBrowseButtonStyle(browseBtn);
-            browseBtn.tooltip = "浏览文件";
+            browseBtn.tooltip = T("browse.file");
             btnContainer.Add(browseBtn);
 
             var openBtn = CreateOpenFolderButton(() => Path.GetDirectoryName(field.value));

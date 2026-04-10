@@ -36,7 +36,7 @@ LubanKit is a graphical editor plugin for **Unity + Luban**. It replaces repetit
 
 ## Preview
 
-![LubanKit Editor Window](Editor/Resources/tablekit.png)
+![LubanKit Editor Window](Editor/Resources/tablekit_en.png)
 
 ---
 
