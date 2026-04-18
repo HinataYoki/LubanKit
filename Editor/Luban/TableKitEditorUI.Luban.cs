@@ -79,6 +79,8 @@ namespace YokiFrame.TableKit.Editor
                     if (allSuccess)
                     {
                         EnsureRequiredFiles(logBuilder);
+                        AssetDatabase.Refresh();
+                        logBuilder.AppendLine(T("log.refresh.db"));
                     }
                 }
 
@@ -203,6 +205,8 @@ namespace YokiFrame.TableKit.Editor
 
                 if (success)
                 {
+                    AssetDatabase.Refresh();
+                    logBuilder.AppendLine(T("log.refresh.db"));
                 }
 
                 UpdateStatusBanner(success ? BuildStatus.Success : BuildStatus.Failed);
